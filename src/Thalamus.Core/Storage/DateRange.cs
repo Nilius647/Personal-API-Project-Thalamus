@@ -14,5 +14,5 @@ public record DateRange
         To = to;
     }
     public TimeSpan Duration() => To - From;
-    public bool Contains(DateTime moment) => moment >= From && moment < To;
+    public bool Contains(DateTime moment) => moment >= From && moment <= To;
 }
