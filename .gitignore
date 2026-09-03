@@ -485,7 +485,7 @@ $RECYCLE.BIN/
 
 #Personal data
 data/
-models/
+/models/
 *.db
 *.db-shm
 *.db-wal
@@ -495,3 +495,6 @@ models/
 .env
 appsettings.Local.json
 secrets.json
+
+#Checklists
+checklists/
