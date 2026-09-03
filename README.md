@@ -1,8 +1,8 @@
 # Project Thalamus: Personal API
 
-Tha final goal is to create a personal API that collects personal data, elaborates it, and lets you read it.
+The final goal is to create a personal API that collects personal data, elaborates it, and lets you read it.
 
-**Status:** Phase 1 - Only the skeleton, not usable yet
+**Status:** Phase 2 — models and storage contracts. Not usable yet.
 
 ---
 
@@ -28,6 +28,8 @@ Thalamus/
 ├── Thalamus.sln
 ├── src/
 │   ├── Thalamus.Core/     domain logic and storage contracts
+│   │   ├── Models/
+│   │   └── Storage/
 │   └── Thalamus.Cli/      command-line interface
 ├── tests/
 │   └── Thalamus.Tests/
