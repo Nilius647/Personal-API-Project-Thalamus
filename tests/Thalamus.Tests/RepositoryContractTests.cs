@@ -66,7 +66,7 @@ public class RepositoryContractTests
         var from = new DateTime(2026, 9, 1, 0, 0, 0, DateTimeKind.Utc);
         var to = new DateTime(2026, 9, 2, 0, 0, 0, DateTimeKind.Utc);
         await storage.AddSamplesAsync(samples);
-        await storage.EraseByIdAsync(deletedId, true);
+        await storage.EraseByIdAsync(deletedId, DataKind.Sample);
         var result = await storage.GetSamplesAsync(from, to);
         Assert.Equal(4, result.Count);
         Assert.DoesNotContain(result, s => s.Id == deletedId);

@@ -6,6 +6,42 @@ public class MemoryRepository : IRepository
 {
     private readonly List<Sample> _samples = new();
     private readonly List<SystemEvent> _systemEvents = new();
+    private void EraseSamplesInRange(DateRange range)
+    {
+        for(int i = 0; i < _samples.Count; i++)
+        {
+            if(range.Contains(_samples[i].TimestampUtc))
+            {
+                _samples[i] = _samples[i] with {IsDeleted = true};
+            }
+        }
+    }
+    private void EraseEventSystemsInRange(DateRange range)
+    {
+        for(int j = 0; j < _systemEvents.Count; j++)
+        {
+            if(range.Contains(_systemEvents[j].TimestampUtc))
+            {
+                _systemEvents[j] = _systemEvents[j] with {IsDeleted = true};
+            }    
+        }
+    }   
+    private void EraseSampleById(Guid id)
+    {
+        var index_s = _samples.FindIndex(s => s.Id == id);
+        if(index_s >= 0)
+        {
+            _samples[index_s] = _samples[index_s] with {IsDeleted = true};
+        }
+    }
+    private void EraseEventSystemById(Guid id)
+    {
+        var index_se = _systemEvents.FindIndex(s => s.Id == id);
+        if(index_se >= 0)
+        {
+            _systemEvents[index_se] = _systemEvents[index_se] with {IsDeleted = true};
+        }
+    }
 
     public Task AddSamplesAsync(IEnumerable<Sample> data)
     {
@@ -29,48 +65,38 @@ public class MemoryRepository : IRepository
         var filtered = _systemEvents.Where(s => !s.IsDeleted && range.Contains(s.TimestampUtc) && (s.Kind == eventKind || eventKind == null)).ToList();
         return Task.FromResult<IReadOnlyList<SystemEvent>>(filtered);
     }
-    public Task EraseDataAsync(DateTime from, DateTime to, bool eraseSamples)
+    public Task EraseDataAsync(DateTime from, DateTime to, DataKind kind)
     {
         var range  = new DateRange(from, to);
-        if(eraseSamples)
+        switch (kind)
         {
-            for(int i = 0; i < _samples.Count(); i++)
-            {
-                if(range.Contains(_samples[i].TimestampUtc))
-                {
-                    _samples[i] = _samples[i] with {IsDeleted = true};
-                }
-            }
-        }
-        else
-        {
-            for(int j = 0; j < _systemEvents.Count(); j++)
-            {
-                if(range.Contains(_systemEvents[j].TimestampUtc))
-                {
-                    _systemEvents[j] = _systemEvents[j] with {IsDeleted = true};
-                }
-            }
+            case DataKind.All:
+                EraseSamplesInRange(range);
+                EraseEventSystemsInRange(range);
+                break;
+            case DataKind.Sample:
+                EraseSamplesInRange(range);
+                break;
+            case DataKind.SystemEvent:
+                EraseEventSystemsInRange(range);
+                break;
         }
         return Task.CompletedTask;
     }
-    public Task EraseByIdAsync(Guid id, bool eraseSamples)
+    public Task EraseByIdAsync(Guid id, DataKind kind)
     {
-        if(eraseSamples)
+        switch (kind)
         {
-            var index = _samples.FindIndex(s => s.Id == id);
-            if(index >= 0)
-            {
-                _samples[index] = _samples[index] with {IsDeleted = true};
-            }
-        }
-        else
-        {
-            var index = _systemEvents.FindIndex(s => s.Id == id);
-            if(index >= 0)
-            {
-                _systemEvents[index] = _systemEvents[index] with {IsDeleted = true};
-            }
+            case DataKind.All:
+                EraseSampleById(id);
+                EraseEventSystemById(id);
+                break;
+            case DataKind.Sample:
+                EraseSampleById(id);
+                break;
+            case DataKind.SystemEvent:
+                EraseEventSystemById(id);
+                break;
         }
         return Task.CompletedTask;
     }
