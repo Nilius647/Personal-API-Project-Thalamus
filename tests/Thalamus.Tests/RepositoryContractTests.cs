@@ -30,11 +30,14 @@ public class RepositoryContractTests
     {
         var profileId = Guid.NewGuid();
         var samples = CreateSamples(profileId);
-        var storage = new MemoryRepository();
+        var path = Path.Combine(Path.GetTempPath(), $"{Guid.NewGuid()}.db");
+        var factory = new DbConnectionFactory(path);
+        var storage = new SqliteRepository(factory);
         await storage.AddSamplesAsync(samples);
         DateTime from = new DateTime(2026, 9, 1, 9, 0, 0, DateTimeKind.Utc);
         DateTime to = new DateTime(2026, 9, 1, 16, 45, 0, DateTimeKind.Utc);
         IReadOnlyList<Sample> newSamples = await storage.GetSamplesAsync(from, to);
+        Assert.Equal(5, newSamples.Count); 
         for(int i = 0; i < samples.Count; i++)
         {
             Assert.Equal(samples[i].Id, newSamples[i].Id);
