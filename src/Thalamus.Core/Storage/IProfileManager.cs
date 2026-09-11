@@ -8,7 +8,7 @@ public interface IProfileManager
     Task DeleteProfileAsync(Guid profileId);
     Task ModifyProfileAsync(Guid profileId, string newName);
     Task<IReadOnlyList<Profile>> ProfileListAsync();
-    Task<Profile> GetCurrentProfileAsync();
+    Task<Profile?> GetCurrentProfileAsync();
     Task SetCurrentProfileAsync(Guid profileId);
     Task<IRepository> GetProfileRepositoryAsync(Guid profileId);
 }
