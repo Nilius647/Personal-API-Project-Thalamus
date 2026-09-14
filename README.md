@@ -97,3 +97,7 @@ See `docs/ARCHITECTURE.md` for the reasoning behind each decision.
 ## License
 
 MIT
+
+"Thalamus" refers to this project. If you fork or redistribute a
+modified version, please retain a link to the original repository
+and avoid presenting it as an unmodified original.
