@@ -2,11 +2,13 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Thalamus.Core\Thalamus.Core.csproj" />
-    <ProjectReference Include="..\Thalamus.Collectors\Thalamus.Collectors.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Diagnostics.EventLog" Version="10.0.12" />
   </ItemGroup>
 
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
     <TargetFramework>net10.0-windows</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>

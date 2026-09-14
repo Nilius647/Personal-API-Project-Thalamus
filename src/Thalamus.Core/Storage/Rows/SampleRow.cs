@@ -34,7 +34,7 @@ internal class SampleRow
             WindowTitle = s.WindowTitle,
             ProcessName = s.ProcessName,
             IsIdle = s.IsIdle ? 1 : 0,
-            IdleTime = (long)s.IdleTime.TotalSeconds,
+            IdleTime = (long)Math.Round(s.IdleTime.TotalSeconds),
             IsDeleted = s.IsDeleted ? 1 : 0,
         }; 
     }
