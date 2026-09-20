@@ -496,8 +496,5 @@ data/
 appsettings.Local.json
 secrets.json
 
-#Checklists
-checklists/
-
 #Notes
 To_write.md
