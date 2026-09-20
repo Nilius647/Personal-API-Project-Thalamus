@@ -17,7 +17,11 @@ switch (args[0])
             profile = await PManager1.CreateProfileAsync("Default");
         var repository = await PManager1.GetProfileRepositoryAsync(profile.Id);
         var activityCollector = new ActivityCollector(TimeSpan.FromSeconds(60), profile.Id);
+        var eventLogCollector = new EventLogCollector(profile.Id);
         using var cts = new CancellationTokenSource();
+        var events = await eventLogCollector.CollectSystemEvents(cts.Token);
+        if (events.Count > 0)
+            await repository.AddSystemEventsAsync(events);
         Console.CancelKeyPress += (_, e) =>
         {
             e.Cancel = true;
